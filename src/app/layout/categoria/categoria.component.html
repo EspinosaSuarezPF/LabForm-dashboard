@@ -1,0 +1,23 @@
+<div>
+  <app-page-header [heading]="'Categoria'" [icon]="'fa-edit'"></app-page-header>
+  <div class="row">
+    <div class="col-g-6">
+      <form role="form" [formGroup]="categoriaForm">
+        <fieldset class="form-group">
+          <label>Agregar Nueva categoría</label>
+          <input class="form-control" type="text" formControlName="nombre" placeholder="Nombre de categoría">
+          <button (click)="createCategoria()">Oprima aqui</button>
+          <p>{{categoriaForm.value | json}}</p>
+        </fieldset>
+      </form>
+      <!--<p>Lista de Categorias:</p>-->
+      <div>
+        <ul *ngFor= "let categoria of categorias | async">
+          <li>
+              <strong>{{categoria.nombre}}</strong>
+          </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+</div>

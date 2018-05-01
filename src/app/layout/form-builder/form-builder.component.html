@@ -2,30 +2,20 @@
     <app-page-header [heading]="'Form Builder'" [icon]="'fa-edit'"></app-page-header>
     <div class="row">
         <div class="col-lg-6">   
-            <form role="form">
+            <form role="form" [formGroup]="formatoForm">
                 <fieldset class="form-group">
                     <label>Text Input</label>
-                    <input class="form-control">
+                    <input class="form-control" formControlName="name">
                     <p class="help-block">Example block-level help text here.</p>
                 </fieldset>
             </form>
-            <label>Añadir un nuevo campo</label>
-            <select>
-                <option value="default" ng-selected="tipoCampoSelected">Escoga el tipo de campo</option>
-                <option value="number" ng-selected="tipoCampoSelected">Campo númerico</option>
-                <option value="string" ng-selected="tipoCampoSelected">Campo de texto</option>
-                <option value="date" ng-selected="tipoCampoSelected">Campo de fecha</option>
-            </select>
-            <label>Añadir sección</label>
-            <input type="text" [(ngModel)]="nameCampo"  name="nameCampo" placeholder="Nombre del campo"/>
+            
             <button (click)="AddCampo()">Crear Formulario</button>
             <div id="_Campos">{{_Campos}}</div>
-            <p>{{message}}</p>
-            <ul *ngFor= "let seccion of secciones | async">
-                <li>
-                    <strong>{{seccion.name}}</strong>
-                </li>
-            </ul>
+            <p>{{formatoForm.value | json}}</p>
+            <select>
+                <option *ngFor="let categoria of categorias | async" [value]="categoria.id">{{categoria.nombre}}</option>
+            </select>
         </div>
     </div>
 </div>
