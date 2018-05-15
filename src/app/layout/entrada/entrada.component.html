@@ -1,0 +1,43 @@
+<div [@routerTransition]>
+  <!--<app-page-header [heading]="'Entrada'" [icon]="'fa-edit'"></app-page-header>
+  -->
+  <div class="card-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Formulario</th>
+          <th>Estado</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entrada of entradas">
+          <td>{{entrada.id}}</td>
+          <td>{{entrada.formulario}}</td>
+          <td>{{entrada.active}}</td>
+          <td>
+            <div class="card-body table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th *ngFor="let dat of entrada.data">
+                      {{dat.name}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td *ngFor="let dat of entrada.data">
+                      {{dat.value}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
