@@ -25,6 +25,7 @@ export class CategoriaComponent implements OnInit {
   constructor(private afs:AngularFirestore, private fb:FormBuilder) { 
     this.createForm();
   }
+  // considerar hacer request con ordenamiento de las categorias
   //Declaraciones
   categoriaForm:FormGroup
   categoriaCol:AngularFirestoreCollection<Categoria>;

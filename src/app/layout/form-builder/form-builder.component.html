@@ -3,7 +3,8 @@
     <div class="row">
         <div class="col-lg-6">   
             <form role="form" [formGroup]="formatoForm">
-                <fieldset class="form-group">
+                <!-- agregar iterador sobre los multiples campos -->
+                <fieldset class="form-group" *ngFor="let campo of campos">
                     <label>Text Input</label>
                     <input class="form-control" formControlName="name">
                     <p class="help-block">Example block-level help text here.</p>

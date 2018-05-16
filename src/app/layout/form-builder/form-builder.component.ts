@@ -17,9 +17,10 @@ import 'rxjs/add/operator/map';
 })
 
 export class FormBuilderComponent implements OnInit {
-    
+    campos: any[]; // cambiar el tipo
+
     constructor(private afs:AngularFirestore, private fb:FormBuilder) {
-        
+        this.campos.push({}); // agregar informacion basica del campo inicial
     }
 
     ngOnInit() {
