@@ -1,21 +1,33 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Form Builder'" [icon]="'fa-edit'"></app-page-header>
-    <div class="row">
-        <div class="col-lg-6">   
-            <form role="form" [formGroup]="formatoForm">
-                <fieldset class="form-group">
-                    <label>Text Input</label>
-                    <input class="form-control" formControlName="name">
-                    <p class="help-block">Example block-level help text here.</p>
+
+    <form role="form" [formGroup]="formatoForm">
+        {{formatoForm.value | json}}
+        <div class="row">
+            <div class="col-lg-4">
+                <fieldset class="form-group required">
+                    <label>Categoria</label>
+                    <select class="form-control" formControlName="categoriaId" required>
+                        <option *ngFor="let categoria of categorias" [value]="categoria.id">{{categoria.nombre}}</option>
+                    </select>
+                    <p class="help-block">Elija una categoria del menú</p>
                 </fieldset>
-            </form>
-            
-            <button (click)="AddCampo()">Crear Formulario</button>
-            <div id="_Campos">{{_Campos}}</div>
-            <p>{{formatoForm.value | json}}</p>
-            <select>
-                <option *ngFor="let categoria of categorias | async" [value]="categoria.id">{{categoria.nombre}}</option>
-            </select>
+            </div>
+            <div class="col-lg-8">
+                <fieldset class="form-group required">
+                    <label>Nombre</label>
+                    <input class="form-control" type="text" formControlName="nombre" required>
+                    <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
+                </fieldset>
+            </div>
         </div>
-    </div>
+
+    </form>
+
+    <!-- <button (click)="AddCampo()">Crear Formulario</button>
+        <div id="_Campos">{{_Campos}}</div>
+        <p>{{formatoForm.value | json}}</p>
+        <select>
+            <option *ngFor="let categoria of categorias | async" [value]="categoria.id">{{categoria.nombre}}</option>
+        </select> -->
 </div>

@@ -9,7 +9,7 @@ import {
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-type optionTypeArray = 
+/* type optionTypeArray = 
 Array<{value:string,text:string}>;
 
 interface Formato{
@@ -18,7 +18,7 @@ interface Formato{
 
 interface Categoria{
     name:string;
-}
+} */
 
 @Component({
     selector: 'app-form-builder',
@@ -33,7 +33,7 @@ interface Categoria{
 }*/
 
 export class FormBuilderComponent implements OnInit {
-    categoriaList:Array<{id:string,nombre:string}>;
+    /* categoriaList:Array<{id:string,nombre:string}>;
     version:number
     _Campos:Array<{
         id:string,
@@ -43,12 +43,23 @@ export class FormBuilderComponent implements OnInit {
         key:string,
         label:string,
         required:boolean
-    }>
+    }> */
+    formatoForm: any;
+
+    categorias = [
+        {id: 0, nombre: 'primera categoria'},
+        {id: 1, nombre: 'segunda categoria'},
+        {id: 2, nombre: 'tercera categoria'},
+    ];
     constructor(private afs:AngularFirestore, private fb:FormBuilder) {
-        this.createForm();
+        /* this.createForm(); */
+        this.formatoForm = this.fb.group({
+            nombre: "",
+            categoriaId: 0,
+        });
     }
     
-    formatoForm:FormGroup;
+    /* formatoForm:FormGroup;
     campoForm:FormGroup;
 
     selectOptions:optionTypeArray;
@@ -78,10 +89,10 @@ export class FormBuilderComponent implements OnInit {
 
     AddCampo(){
 
-    }
+    } */
 
     ngOnInit() {
-        this.formatoCol=this.afs.collection('formatos');
+        /* this.formatoCol=this.afs.collection('formatos');
         this.formatos=this.formatoCol.valueChanges();
         this.categoriaCol=this.afs.collection("Categoria");
         this.categorias=this.categoriaCol.valueChanges();
@@ -93,6 +104,13 @@ export class FormBuilderComponent implements OnInit {
             {value:"number",text:"Numerico"},
             {value:"date",text:"Fecha"},
             {value:"select",text:"DropdownMenu"}
-        ]
+        ] */
     }
 }
+
+/** Comentarios
+ * 
+ * Al crear los formularios, debe colocarseles versión 1
+ * 
+ * los key de campo y de opcion deben ser calculados (pueden sacarse del nombre, usando camelcase)
+ */
