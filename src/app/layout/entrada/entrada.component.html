@@ -1,6 +1,13 @@
 <div [@routerTransition]>
   <!--<app-page-header [heading]="'Entrada'" [icon]="'fa-edit'"></app-page-header>
   -->
+  <label>Seleccione el formato</label>
+  <select [(ngModel)]="opcion">
+    <option [ngValue]="formato" *ngFor="let formato of nombreFormatos" >
+      {{formato}}
+    </option>
+  </select>
+  <button (click)="cargarEntradaSegunFormato(opcion)">Buscar</button>
   <div class="card-body table-responsive">
     <table class="table">
       <thead>

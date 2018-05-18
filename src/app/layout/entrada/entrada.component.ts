@@ -18,6 +18,15 @@ interface Entrada{
   data:object
 }
 
+interface Formato{
+  id:string,
+  nombre:string,
+  categoriaId:string,
+  active:true,
+  version:number,
+  _Campos:object
+}
+
 @Component({
   selector: 'app-entrada',
   templateUrl: './entrada.component.html',
@@ -32,13 +41,42 @@ export class EntradaComponent implements OnInit {
 
   //Declaraciones
   entradaCol:AngularFirestoreCollection<Entrada>;
-  entradas:Array<Entrada>;
+  entradas:Array<Entrada>=[];
+  formatoCol:AngularFirestoreCollection<Formato>;
+  formatos:Array<Formato>;
+  nombreFormatos:Array<string>=[];
+  public opcion:string="";
+  cargarEntradaSegunFormato(opcion){
+    console.log(opcion);
+    this.entradaCol.valueChanges()
+    .subscribe(data=>{
+      this.entradas=data
+      .filter(d=>d.formulario===opcion)
+      .sort((a,b)=>{
+        if(a.formulario>b.formulario){
+          return 1;
+        }
+        else if(a.formulario<b.formulario){
+          return -1;
+        }
+        else{
+          return 0;
+        }
+      });
+    });
+  }
 
   ngOnInit() {
     this.entradaCol=this.afs.collection('Entradas');
-    this.entradaCol.valueChanges()
+    this.formatoCol=this.afs.collection('Formatos');
+    this.formatoCol.valueChanges()
     .subscribe(data=>{
-      this.entradas=data.sort();
+      data.forEach(formato=>{
+        if(!this.nombreFormatos.includes(formato.nombre)){
+          this.nombreFormatos.push(formato.nombre);
+        }
+      });
+      this.nombreFormatos.sort();
     });
   }
 
