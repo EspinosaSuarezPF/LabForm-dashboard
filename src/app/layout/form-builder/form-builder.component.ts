@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { FormBuilder,FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {
     AngularFirestore,
     AngularFirestoreCollection,
     AngularFirestoreDocument
-    } from 'angularfire2/firestore';
+} from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Campo } from '../../shared/models/campo'
@@ -27,10 +27,10 @@ export class FormBuilderComponent implements OnInit {
         {id: 1, nombre: 'segunda categoria'},
         {id: 2, nombre: 'tercera categoria'},
     ]; */
-    categorias: Array<any>;    
+    categorias: Array<any>;
     Campos: Array<any>;
 
-    constructor(private afs:AngularFirestore, private fb:FormBuilder) {
+    constructor(private afs: AngularFirestore, private fb: FormBuilder) {
         this.buildFormatoForm();
         this.Campos = [
             new Campo(),
@@ -43,7 +43,7 @@ export class FormBuilderComponent implements OnInit {
             categoriaId: -1,
         });
     }
-    
+
     /* formatoForm:FormGroup;
     campoForm:FormGroup;
 
@@ -73,6 +73,7 @@ export class FormBuilderComponent implements OnInit {
             .subscribe(
                 categoria => this.categorias.push(categoria)
             );
+
         this.tiposCampo = [
             /* { value: "string", text: "AlfaNumerico" },
             { value: "number", text: "Numerico" },
@@ -82,6 +83,15 @@ export class FormBuilderComponent implements OnInit {
             { value: "dropdown", text: "Selección múltiple" },
             { value: "textbox", text: "Alfanumérico" },
         ]
+    }
+
+    agregarNuevoCampo(tipo: string) {
+
+        switch (tipo) {
+            case 'checkbox':
+
+                break;
+        }
     }
 }
 

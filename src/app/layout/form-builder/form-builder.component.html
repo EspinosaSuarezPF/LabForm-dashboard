@@ -44,7 +44,9 @@
             <select class="form-control" [(ngModel)]="tipoNuevoCampo" required>
                 <option *ngFor="let tipo of tiposCampo" [value]="tipo.value">{{tipo.text}}</option>
             </select>
-            <button type="button" (click)="" class="btn btn-default">Agregar Campo</button>
+            <button type="button" (click)="agregarNuevoCampo" class="btn btn-default">
+                <i class="fa fa-plus"></i> Agregar Campo
+            </button>
             <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
         </fieldset>
     </form>
