@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import {
     AngularFirestore,
     AngularFirestoreCollection,
@@ -28,13 +28,13 @@ export class FormBuilderComponent implements OnInit {
         {id: 2, nombre: 'tercera categoria'},
     ]; */
     categorias: Array<any>;
+    formsCampos: Array<any>;
     Campos: Array<any>;
 
     constructor(private afs: AngularFirestore, private fb: FormBuilder) {
         this.buildFormatoForm();
-        this.Campos = [
-            new Campo(),
-        ];
+        this.Campos = new Array();
+        this.formsCampos = new Array();
     }
 
     private buildFormatoForm() {
@@ -85,13 +85,33 @@ export class FormBuilderComponent implements OnInit {
         ]
     }
 
-    agregarNuevoCampo(tipo: string) {
-
-        switch (tipo) {
+    agregarNuevoCampo() {
+        let formCtrlsCampo = {};
+        /* switch para tipos de campos */
+        switch (this.tipoNuevoCampo) {
             case 'checkbox':
-
+                formCtrlsCampo['controlType'] = 'checkbox';
                 break;
+            case 'dropdown':
+                formCtrlsCampo['controlType'] = 'dropdown';
+                break;
+            case 'textbox':
+                formCtrlsCampo['controlType'] = 'textbox';
+            default:
+                return; /* Termina la ejecucion cuando no hay tipo de campo escogido */
         }
+        // Agrega codigo general para los campos
+        Object.assign(formCtrlsCampo, {
+            name: new FormControl(),
+            value: new FormControl(),
+            label: new FormControl(),
+            required: new FormControl(),
+            order: new FormControl(),
+        });
+
+        this.formsCampos.push(
+            new FormGroup(formCtrlsCampo),
+        );
     }
 }
 

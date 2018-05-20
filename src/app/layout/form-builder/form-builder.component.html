@@ -22,21 +22,24 @@
             </div>
         </div>
         <!-- formularios para los campos -->
-        <div *ngFor="let campo of Campos">
-            <fieldset class="form-group required">
-                <label>Nombre</label>
-                <input class="form-control" type="text" formControlName="nombre" required>
-                <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
-            </fieldset>
+        <div *ngFor="let campo of formsCampos">
+            <form [formGroup]="campo">
 
-
-            <div [ngSwitch]="campo.controlType">
-                <div *ngSwitchCase="checkbox">
-
+                <fieldset class="form-group required">
+                    <label>Nombre</label>
+                    <input class="form-control" type="text" formControlName="name" required>
+                    <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
+                </fieldset>
+                
+                
+                <div [ngSwitch]="campo.controlType">
+                    <div *ngSwitchCase="checkbox">
+                        
+                    </div>
+                    
+                    
                 </div>
-
-
-            </div>
+            </form>
         </div>
         <!-- Agregar campo -->
         <fieldset class="form-group required">
@@ -44,7 +47,7 @@
             <select class="form-control" [(ngModel)]="tipoNuevoCampo" required>
                 <option *ngFor="let tipo of tiposCampo" [value]="tipo.value">{{tipo.text}}</option>
             </select>
-            <button type="button" (click)="agregarNuevoCampo" class="btn btn-default">
+            <button type="button" (click)="agregarNuevoCampo()" class="btn btn-default">
                 <i class="fa fa-plus"></i> Agregar Campo
             </button>
             <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
