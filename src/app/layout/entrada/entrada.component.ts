@@ -15,16 +15,17 @@ interface Entrada{
   id:string,
   formulario:string,
   active:boolean,
-  data:object
+  consecutivo:string,
+  data:Array<{name:string,value:any}>
 }
 
-interface Formato{
+interface Formulario{
   id:string,
   nombre:string,
   categoriaId:string,
   active:true,
   version:number,
-  _Campos:object
+  Campos:Array<object>
 }
 
 @Component({
@@ -42,12 +43,58 @@ export class EntradaComponent implements OnInit {
   //Declaraciones
   entradaCol:AngularFirestoreCollection<Entrada>;
   entradas:Array<Entrada>=[];
-  formatoCol:AngularFirestoreCollection<Formato>;
-  formatos:Array<Formato>;
-  nombreFormatos:Array<string>=[];
-  public opcion:string="";
-  cargarEntradaSegunFormato(opcion){
-    console.log(opcion);
+  formularioCol:AngularFirestoreCollection<Formulario>;
+  formularios:Array<Formulario>;
+  nombreFormularios:Array<string>=[];
+  camposEntrada:Array<string>=[];
+  public opcionSelect:string="";
+
+  //Ordena según el consecutivo
+  ordenarPorConsecutivo(){
+    this.entradas.sort((a,b)=>{
+      if(a.consecutivo>b.consecutivo){
+        return 1;
+      }
+      else if(a.consecutivo<b.consecutivo){
+        return -1;
+      }
+      else{
+        return 0;
+      }
+    });
+  }
+
+  //Ordena dependiendo del campo de menor a mayor
+  ordenarPorColumna(nombreColumna){
+    this.entradas.sort((a,b)=>{
+      let ax:{name:string,value:any}=undefined;
+      for(let i=0;i<a.data.length;i++){
+        if(a.data[i].name===nombreColumna){
+          ax=a.data[i];
+          break;
+        }
+      }
+      let bx:{name:string,value:any}=undefined;
+      for(let i=0;i<b.data.length;i++){
+        if(b.data[i].name===nombreColumna){
+          bx=b.data[i];
+          break;
+        }
+      }
+      if(ax.value>bx.value){
+        return 1;
+      }
+      else if(ax.value<bx.value){
+        return -1;
+      }
+      else{
+        return 0;
+      }
+    })
+  }
+
+  cargarEntradaSegunFormulario(opcion){
+    //Carga entrada dependiendo del formulario escogido
     this.entradaCol.valueChanges()
     .subscribe(data=>{
       this.entradas=data
@@ -63,21 +110,34 @@ export class EntradaComponent implements OnInit {
           return 0;
         }
       });
+      this.camposEntrada.length=0;
+      if(this.entradas.length!==0){
+        let entradaDefault=this.entradas.pop();
+        entradaDefault.data.forEach(campo=>{
+          if(!this.camposEntrada.includes(campo.name)){
+            this.camposEntrada.push(campo.name);
+          }
+        });
+        this.entradas.push(entradaDefault);
+      }
     });
   }
 
   ngOnInit() {
     this.entradaCol=this.afs.collection('Entradas');
-    this.formatoCol=this.afs.collection('Formatos');
-    this.formatoCol.valueChanges()
+    this.formularioCol=this.afs.collection('Formularios');
+    //Obtencion de nombre de formularios
+    this.formularioCol.valueChanges()
     .subscribe(data=>{
-      data.forEach(formato=>{
-        if(!this.nombreFormatos.includes(formato.nombre)){
-          this.nombreFormatos.push(formato.nombre);
+      data.forEach(formulario=>{
+        if(!this.nombreFormularios.includes(formulario.nombre)){
+          this.nombreFormularios.push(formulario.nombre);
         }
       });
-      this.nombreFormatos.sort();
+      this.nombreFormularios.sort();
     });
+    
+    
   }
 
 }

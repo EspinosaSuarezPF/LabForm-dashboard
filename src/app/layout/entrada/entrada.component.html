@@ -1,47 +1,33 @@
 <div [@routerTransition]>
-  <!--<app-page-header [heading]="'Entrada'" [icon]="'fa-edit'"></app-page-header>
-  -->
-  <label>Seleccione el formato</label>
-  <select [(ngModel)]="opcion">
-    <option [ngValue]="formato" *ngFor="let formato of nombreFormatos" >
-      {{formato}}
-    </option>
-  </select>
-  <button (click)="cargarEntradaSegunFormato(opcion)">Buscar</button>
+  <app-page-header [heading]="'Entrada'" [icon]="'fa-edit'"></app-page-header>
+  <form class="form-inline">
+    <label class="my-1 mr-2">Seleccione el formato</label>
+    <select class="form-control my-1 mr-sm-2" [(ngModel)]="opcionSelect" [ngModelOptions]="{standalone:true}">
+      <option [ngValue]="formulario" *ngFor="let formulario of nombreFormularios" >
+        {{formulario}}
+      </option>
+    </select>
+    <button class="btn btn-secondary my-1" (click)="cargarEntradaSegunFormulario(opcionSelect)">Buscar</button>
+  </form>
+
+  <h4>Lista de entradas:</h4>
   <div class="card-body table-responsive">
     <table class="table">
       <thead>
         <tr>
-          <th>Id</th>
-          <th>Formulario</th>
-          <th>Estado</th>
-          <th>Data</th>
+          <th ng-show="camposEntrada.leght!==0">
+              <button (click)="ordenarPorConsecutivo()">Consecutivo</button>
+          </th>
+          <th *ngFor="let campo of camposEntrada">
+            <button (click)="ordenarPorColumna(campo)">{{campo}}</button>
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let entrada of entradas">
-          <td>{{entrada.id}}</td>
-          <td>{{entrada.formulario}}</td>
-          <td>{{entrada.active}}</td>
-          <td>
-            <div class="card-body table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th *ngFor="let dat of entrada.data">
-                      {{dat.name}}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td *ngFor="let dat of entrada.data">
-                      {{dat.value}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <td>{{entrada.consecutivo}}</td>
+          <td *ngFor="let d of entrada.data">
+            {{d.value}}
           </td>
         </tr>
       </tbody>
