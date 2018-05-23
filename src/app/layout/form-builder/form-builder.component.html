@@ -30,14 +30,26 @@
                     <input class="form-control" type="text" formControlName="name" required>
                     <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
                 </fieldset>
-
-                <div [ngSwitch]="campo.controlType">
-                    <div *ngSwitchCase="checkbox">
+                <div [ngSwitch]="campo.value.controlType">
+                    <div *ngSwitchCase="'checkbox'">
+                        <input type="checkbox" formControlName="value">
+                        <input type="text" formControlName="label" placeholder="Mensaje">
+                        
 
                     </div>
-
-
+                    <div *ngSwitchCase="'dropdown'">
+                        <div>
+                            <!-- crear arrayform para los options -->
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'textbox'">
+                        <div>
+                            
+                        </div>
+                    </div>
                 </div>
+
+
             </div>
         </div>
         <!-- Agregar campo -->
