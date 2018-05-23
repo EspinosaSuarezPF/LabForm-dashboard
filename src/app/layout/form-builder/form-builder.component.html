@@ -22,35 +22,34 @@
             </div>
         </div>
         <!-- formularios para los campos -->
-        <div *ngFor="let campo of formsCampos">
-            <form [formGroup]="campo">
+        <div formArrayName="_Campos" *ngFor="let campo of formatoForm.get('_Campos').controls; let i = index;">
+            <div [formGroupName]="i">
 
                 <fieldset class="form-group required">
                     <label>Nombre</label>
                     <input class="form-control" type="text" formControlName="name" required>
                     <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
                 </fieldset>
-                
-                
+
                 <div [ngSwitch]="campo.controlType">
                     <div *ngSwitchCase="checkbox">
-                        
+
                     </div>
-                    
-                    
+
+
                 </div>
-            </form>
+            </div>
         </div>
         <!-- Agregar campo -->
-        <fieldset class="form-group required">
-            <label>Tipo de campo</label>
-            <select class="form-control" [(ngModel)]="tipoNuevoCampo" required>
-                <option *ngFor="let tipo of tiposCampo" [value]="tipo.value">{{tipo.text}}</option>
-            </select>
-            <button type="button" (click)="agregarNuevoCampo()" class="btn btn-default">
-                <i class="fa fa-plus"></i> Agregar Campo
-            </button>
-            <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
-        </fieldset>
     </form>
+    <fieldset class="form-group required">
+        <label>Tipo de campo</label>
+        <select class="form-control" [(ngModel)]="tipoNuevoCampo" required>
+            <option *ngFor="let tipo of tiposCampo" [value]="tipo.value">{{tipo.text}}</option>
+        </select>
+        <button type="button" (click)="agregarNuevoCampo(tipoNuevoCampo)" class="btn btn-default">
+            <i class="fa fa-plus"></i> Agregar Campo
+        </button>
+        <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
+    </fieldset>
 </div>

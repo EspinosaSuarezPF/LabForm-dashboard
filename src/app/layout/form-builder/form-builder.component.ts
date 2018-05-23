@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl } from '@angular/forms';
 import {
     AngularFirestore,
     AngularFirestoreCollection,
@@ -18,7 +18,6 @@ import { Campo } from '../../shared/models/campo'
 })
 
 export class FormBuilderComponent implements OnInit {
-    tipoNuevoCampo: string;
     formatoForm: any;
     formulariosColl: any;
     tiposCampo: Array<any>;
@@ -28,19 +27,19 @@ export class FormBuilderComponent implements OnInit {
         {id: 2, nombre: 'tercera categoria'},
     ]; */
     categorias: Array<any>;
-    formsCampos: Array<any>;
-    Campos: Array<any>;
 
     constructor(private afs: AngularFirestore, private fb: FormBuilder) {
         this.buildFormatoForm();
-        this.Campos = new Array();
-        this.formsCampos = new Array();
+        this.categorias = new Array<any>();
     }
 
     private buildFormatoForm() {
         this.formatoForm = this.fb.group({
             nombre: "",
             categoriaId: -1,
+            _Campos: this.fb.array(
+                new Array<AbstractControl>()
+            )
         });
     }
 
@@ -85,10 +84,11 @@ export class FormBuilderComponent implements OnInit {
         ]
     }
 
-    agregarNuevoCampo() {
+    agregarNuevoCampo(tipoNuevoCampo) {
+        let formsCampos = this.formatoForm.get('_Campos');
         let formCtrlsCampo = {};
         /* switch para tipos de campos */
-        switch (this.tipoNuevoCampo) {
+        switch (tipoNuevoCampo) {
             case 'checkbox':
                 formCtrlsCampo['controlType'] = 'checkbox';
                 break;
@@ -97,6 +97,7 @@ export class FormBuilderComponent implements OnInit {
                 break;
             case 'textbox':
                 formCtrlsCampo['controlType'] = 'textbox';
+                break;
             default:
                 return; /* Termina la ejecucion cuando no hay tipo de campo escogido */
         }
@@ -108,9 +109,8 @@ export class FormBuilderComponent implements OnInit {
             required: new FormControl(),
             order: new FormControl(),
         });
-
-        this.formsCampos.push(
-            new FormGroup(formCtrlsCampo),
+        formsCampos.push(
+            this.fb.group(formCtrlsCampo),
         );
     }
 }
