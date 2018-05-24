@@ -95,35 +95,54 @@ export class FormBuilderComponent implements OnInit {
         let formInfo = formGroupFormato.value;
         console.log(formInfo);
         formGroupFormato.disable(); // evita modificar el formulario hasta que se guarde o se de un error
-
-        let doc = this.formulariosColl.ref.where(
-            "nombre", "==", formInfo.nombre
-        ).get().then(QuerySnapshot => {
-            if (QuerySnapshot.empty) {
-                let id = this.afs.createId();
-                let basicProps = {
-                    id: id,
-                    active: true,
-                    version: 1
+        let doc = this.formulariosColl.ref
+            .where("nombre", "==", formInfo.nombre) // se valida que el nombre del formulario sea unico
+            .get()
+            .then(QuerySnapshot => {
+                if (QuerySnapshot.empty) {
+                    let id = this.afs.createId();
+                    let basicProps = {
+                        id: id,
+                        active: true,
+                        version: 1
+                    } // estos valores son iniciales y obligatorios para todos los formularios
+                    console.log(this.agregarIdKeyCampos(formInfo));
+                    Object.assign(formInfo, basicProps);
+                    this.formulariosColl.doc(id)
+                        .set(formInfo)
+                        .then(
+                            response => {
+                                window.alert("Formulario creado");
+                                formGroupFormato.reset();
+                                this.crearFormulario();
+                                formGroupFormato.enable();
+                            },
+                            error => console.log(error)
+                        );
                 }
-                Object.assign(formInfo, basicProps);
-                this.formulariosColl.doc(id)
-                    .set(formInfo)
-                    .then(
-                        response => {
-                            window.alert("Categoria creada");
-                            formGroupFormato.reset();
-                            this.crearFormulario();
-                            formGroupFormato.enable();
-                        },
-                        error => console.log(error)
-                    );
+                else {
+                    window.alert("Ya existe un formulario con el mismo nombre");
+                    formGroupFormato.enable();
+                }
+            });
+    }
+
+    agregarIdKeyCampos(formInfo) {
+        return formInfo.Campos.map(
+            campo => {
+                let uuid = this.camelize(campo.nombre);
+                return Object.assign(campo, {
+                    id: uuid,
+                    key: uuid
+                });
             }
-            else {
-                window.alert("Ya existe un formulario con el mismo nombre");
-                formGroupFormato.enable();
-            }
-        });
+        );
+    }
+
+    camelize(str) {
+        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+            return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+        }).replace(/\s+/g, '');
     }
 }
 
