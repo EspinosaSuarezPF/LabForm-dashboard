@@ -18,18 +18,15 @@ import { Campo } from '../../shared/models/campo'
 })
 
 export class FormBuilderComponent implements OnInit {
+    message: string;
     formatoForm: any;
     formulariosColl: any;
     tiposCampo: Array<any>;
-    /* categorias: Array<any> = [
-        {id: 0, nombre: 'primera categoria'},
-        {id: 1, nombre: 'segunda categoria'},
-        {id: 2, nombre: 'tercera categoria'},
-    ]; */
     categorias: Array<any>;
 
     constructor(private afs: AngularFirestore, private fb: FormBuilder) {
         this.buildFormatoForm();
+        this.message = "";
         this.categorias = new Array<any>();
     }
 
@@ -37,47 +34,25 @@ export class FormBuilderComponent implements OnInit {
         this.formatoForm = this.fb.group({
             nombre: "",
             categoriaId: -1,
-            _Campos: this.fb.array(
+            Campos: this.fb.array(
                 new Array<AbstractControl>()
             )
         });
     }
-
-    /* formatoForm:FormGroup;
-    campoForm:FormGroup;
-
-    selectOptions:optionTypeArray;
-
-    categoriaCol:AngularFirestoreCollection<Formato>;
-    categorias:Observable<Categoria[]>;
-
-    formatoCol:AngularFirestoreCollection<Formato>;
-    formatos:Observable<Formato[]>;
-
-    nameCampo:string;
-    message:string;
-    
-    AddFormato(){
-        this.afs.collection('/formatos').add({'name':this.formatoForm.value.name});
-    }
-
-    AddCampo(){
-
-    } */
 
     ngOnInit() {
         this.formulariosColl = this.afs.collection('Formularios');
         this.afs.collection("Categorias")
             .valueChanges()
             .subscribe(
-                categoria => this.categorias.push(categoria)
+                categorias => {
+                    categorias.forEach(categoria => {
+                        this.categorias.push(categoria);
+                    });
+                }
             );
 
         this.tiposCampo = [
-            /* { value: "string", text: "AlfaNumerico" },
-            { value: "number", text: "Numerico" },
-            { value: "date", text: "Fecha" },
-            { value: "select", text: "DropdownMenu "} */
             { value: "checkbox", text: "Dicotomico (si/no)" },
             { value: "dropdown", text: "Selección múltiple" },
             { value: "textbox", text: "Alfanumérico" },
@@ -85,7 +60,7 @@ export class FormBuilderComponent implements OnInit {
     }
 
     agregarNuevoCampo(tipoNuevoCampo) {
-        let formsCampos = this.formatoForm.get('_Campos');
+        let formsCampos = this.formatoForm.get('Campos');
         let formCtrlsCampo = {};
         /* switch para tipos de campos */
         switch (tipoNuevoCampo) {
@@ -99,19 +74,56 @@ export class FormBuilderComponent implements OnInit {
                 formCtrlsCampo['controlType'] = 'textbox';
                 break;
             default:
-                return; /* Termina la ejecucion cuando no hay tipo de campo escogido */
+                return;
         }
         // Agrega codigo general para los campos
         Object.assign(formCtrlsCampo, {
             name: new FormControl(),
-            value: new FormControl(),
+            value: new FormControl(), // especifico
             label: new FormControl(),
             required: new FormControl(),
-            order: new FormControl(),
+            order: new FormControl(0),
         });
         formsCampos.push(
             this.fb.group(formCtrlsCampo),
         );
+    }
+
+    crearFormulario() {
+        /* codigo para creacion de formulario */
+        let formGroupFormato = this.formatoForm as FormGroup;
+        let formInfo = formGroupFormato.value;
+        console.log(formInfo);
+        formGroupFormato.disable(); // evita modificar el formulario hasta que se guarde o se de un error
+
+        let doc = this.formulariosColl.ref.where(
+            "nombre", "==", formInfo.nombre
+        ).get().then(QuerySnapshot => {
+            if (QuerySnapshot.empty) {
+                let id = this.afs.createId();
+                let basicProps = {
+                    id: id,
+                    active: true,
+                    version: 1
+                }
+                Object.assign(formInfo, basicProps);
+                this.formulariosColl.doc(id)
+                    .set(formInfo)
+                    .then(
+                        response => {
+                            window.alert("Categoria creada");
+                            formGroupFormato.reset();
+                            this.crearFormulario();
+                            formGroupFormato.enable();
+                        },
+                        error => console.log(error)
+                    );
+            }
+            else {
+                window.alert("Ya existe un formulario con el mismo nombre");
+                formGroupFormato.enable();
+            }
+        });
     }
 }
 

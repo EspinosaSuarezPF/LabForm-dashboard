@@ -1,6 +1,6 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Form Builder'" [icon]="'fa-edit'"></app-page-header>
-
+    <h1>{{message}}</h1>
     <form role="form" [formGroup]="formatoForm">
         {{formatoForm.value | json}}
         <div class="row">
@@ -22,37 +22,66 @@
             </div>
         </div>
         <!-- formularios para los campos -->
-        <div formArrayName="_Campos" *ngFor="let campo of formatoForm.get('_Campos').controls; let i = index;">
+        <div formArrayName="Campos" *ngFor="let campo of formatoForm.get('Campos').controls; let i = index;">
             <div [formGroupName]="i">
+                <p>-----------------------------------separator---------------------------------</p>
+                <div class="row">
 
-                <fieldset class="form-group required">
-                    <label>Nombre</label>
-                    <input class="form-control" type="text" formControlName="name" required>
-                    <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
-                </fieldset>
-                <div [ngSwitch]="campo.value.controlType">
-                    <div *ngSwitchCase="'checkbox'">
-                        <input type="checkbox" formControlName="value">
-                        <input type="text" formControlName="label" placeholder="Mensaje">
-                        
+                    <fieldset class="form-group required col-lg-6">
+                        <!-- nombre -->
+                        <label>Nombre</label>
+                        <input class="form-control" type="text" formControlName="name" required>
+                        <p class="help-block">Escoja un nombre para el formulario. Debe ser único.</p>
+                    </fieldset>
+                    <fieldset class="form-group required col-lg-6">
+                        <!-- mensaje -->
+                        <label>Mensaje</label>
+                        <input class="form-control" type="text" formControlName="label" placeholder="Mensaje" required>
+                        <!-- label -->
+                        <p class="help-block">Este es el mensaje que identificará la casilla en el formulario.</p>
+                    </fieldset>
+                    <fieldset class="form-group required col-lg-4">
+                        <!-- requerido -->
+                        <label>
+                            <input type="checkbox" formControlName="required" required> Requerido
+                        </label>
+                        <p class="help-block">Marque esta casilla si el campo es requerido.</p>
+                    </fieldset>
+                    <fieldset class="form-group required col-lg-2">
+                        <!-- orden -->
+                        <label>Orden</label>
+                        <input class="form-control" type="number" formControlName="order" required>
+                        <p class="help-block">Si lo desea, puede especificar un orden para los campos dentro del formulario.</p>
+                    </fieldset>
 
-                    </div>
-                    <div *ngSwitchCase="'dropdown'">
-                        <div>
-                            <!-- crear arrayform para los options -->
+
+                    <div [ngSwitch]="campo.value.controlType">
+
+                        <div *ngSwitchCase="'checkbox'">
+                            <fieldset class="form-group required col-lg-4">
+                                <label>
+                                    <input type="checkbox" formControlName="value"> Valor
+                                </label>
+                                <p class="help-block">El valor por defecto de la casilla (checkeado o no)</p>
+                            </fieldset>
+
+
+
                         </div>
-                    </div>
-                    <div *ngSwitchCase="'textbox'">
-                        <div>
+                        <div *ngSwitchCase="'dropdown'">
+                            
+                        </div>
+                        <div *ngSwitchCase="'textbox'">
                             
                         </div>
                     </div>
+
+
                 </div>
-
-
             </div>
         </div>
         <!-- Agregar campo -->
+        <button class="btn btn-primary" (click)="crearFormulario()">Guardar Formulario</button>
     </form>
     <fieldset class="form-group required">
         <label>Tipo de campo</label>
