@@ -15,9 +15,9 @@
     <table class="table">
       <thead>
         <tr>
-          <th ng-show="camposEntrada.leght!==0">
+          <!-- <th ng-show="camposEntrada.leght!==0">
               <button (click)="ordenarPorConsecutivo()">Consecutivo</button>
-          </th>
+          </th> -->
           <th *ngFor="let campo of camposEntrada">
             <button (click)="ordenarPorColumna(campo)">{{campo}}</button>
           </th>
@@ -25,7 +25,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let entrada of entradas">
-          <td>{{entrada.consecutivo}}</td>
+          <!-- <td>{{entrada.consecutivo}}</td> -->
           <td *ngFor="let d of entrada.data">
             {{d.value}}
           </td>
