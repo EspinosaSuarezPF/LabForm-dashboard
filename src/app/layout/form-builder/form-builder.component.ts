@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl, Validators } from '@angular/forms';
 import {
     AngularFirestore,
     AngularFirestoreCollection,
@@ -69,6 +69,7 @@ export class FormBuilderComponent implements OnInit {
                 break;
             case 'dropdown':
                 formCtrlsCampo['controlType'] = 'dropdown';
+                formCtrlsCampo['options'] = new FormArray( new Array<AbstractControl>() );
                 break;
             case 'textbox':
                 formCtrlsCampo['controlType'] = 'textbox';
@@ -78,11 +79,11 @@ export class FormBuilderComponent implements OnInit {
         }
         // Agrega codigo general para los campos
         Object.assign(formCtrlsCampo, {
-            name: new FormControl(),
-            value: new FormControl(), // especifico
-            label: new FormControl(),
-            required: new FormControl(),
-            order: new FormControl(0),
+            name: new FormControl('', Validators.required),
+            value: new FormControl(false, Validators.required), // especifico
+            label: new FormControl('', Validators.required),
+            required: new FormControl(false, Validators.required),
+            order: new FormControl(0, Validators.required),
         });
         formsCampos.push(
             this.fb.group(formCtrlsCampo),
@@ -125,6 +126,15 @@ export class FormBuilderComponent implements OnInit {
                     formGroupFormato.enable();
                 }
             });
+    }
+
+    agregarOption(options) {
+        options.push(
+            this.fb.group({
+                key: '',
+                value: ''
+            },Validators.required)
+        );
     }
 
     agregarIdKeyCampos(formInfo) {
