@@ -97,12 +97,8 @@ export class CategoriaComponent implements OnInit {
     });
   }
 
-  activateCategoria(categoriaId){
-    this.categoriaCol.doc(categoriaId).update({active:true});
-  }
-
-  desactivateCategoria(categoriaId){
-    this.categoriaCol.doc(categoriaId).update({active:false});
+  activateCategoria(categoriaId,categoriaActive){
+    this.categoriaCol.doc(categoriaId).update({active:!categoriaActive});
   }
 
   createForm(){
