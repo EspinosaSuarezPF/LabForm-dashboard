@@ -66,13 +66,16 @@ export class FormBuilderComponent implements OnInit {
         switch (tipoNuevoCampo) {
             case 'checkbox':
                 formCtrlsCampo['controlType'] = 'checkbox';
+                formCtrlsCampo['value'] = new FormControl(false, Validators.required); // especifico
                 break;
             case 'dropdown':
                 formCtrlsCampo['controlType'] = 'dropdown';
                 formCtrlsCampo['options'] = new FormArray( new Array<AbstractControl>() );
+                formCtrlsCampo['value'] = new FormControl('', Validators.required);
                 break;
             case 'textbox':
                 formCtrlsCampo['controlType'] = 'textbox';
+                formCtrlsCampo['value'] = new FormControl('', Validators.required);
                 break;
             default:
                 return;
@@ -80,7 +83,6 @@ export class FormBuilderComponent implements OnInit {
         // Agrega codigo general para los campos
         Object.assign(formCtrlsCampo, {
             name: new FormControl('', Validators.required),
-            value: new FormControl(false, Validators.required), // especifico
             label: new FormControl('', Validators.required),
             required: new FormControl(false, Validators.required),
             order: new FormControl(0, Validators.required),
