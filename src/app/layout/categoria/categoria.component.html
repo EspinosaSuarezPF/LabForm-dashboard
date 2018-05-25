@@ -18,8 +18,7 @@
                 <th>Nombre</th>
                 <th>Estado</th>
                 <th>Editar</th>
-                <th>Activar</th>
-                <th>Desactivar</th>
+                <th>Activar/Desactivar</th>
             </tr>
             </thead>
             <tbody>
@@ -45,8 +44,7 @@
                     }}
                   </td>
                   <td><button class="btn btn-secondary" (click)="open(content)">Editar</button></td>
-                  <td><button class="btn btn-secondary" (click)="activateCategoria(categoria.id)">Activar</button></td>
-                  <td><button class="btn btn-secondary" (click)="desactivateCategoria(categoria.id)">Desactivar</button></td>
+                  <td><button class="btn btn-secondary" (click)="activateCategoria(categoria.id,categoria.active)">Activar/Desactivar</button></td>
                 </tr>
             </tbody>
         </table>
