@@ -96,7 +96,6 @@ export class FormBuilderComponent implements OnInit {
         /* codigo para creacion de formulario */
         let formGroupFormato = this.formatoForm as FormGroup;
         let formInfo = formGroupFormato.value;
-        console.log(formInfo);
         formGroupFormato.disable(); // evita modificar el formulario hasta que se guarde o se de un error
         let doc = this.formulariosColl.ref
             .where("nombre", "==", formInfo.nombre) // se valida que el nombre del formulario sea unico
