@@ -18,6 +18,7 @@ import { Campo } from '../../shared/models/campo'
 })
 
 export class FormBuilderComponent implements OnInit {
+    tipoNuevoCampo: any;
     message: string;
     formatoForm: any;
     formulariosColl: any;
