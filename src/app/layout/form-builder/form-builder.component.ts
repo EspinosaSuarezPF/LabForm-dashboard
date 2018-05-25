@@ -128,9 +128,10 @@ export class FormBuilderComponent implements OnInit {
     }
 
     agregarIdKeyCampos(formInfo) {
+        console.log(formInfo);
         return formInfo.Campos.map(
             campo => {
-                let uuid = this.camelize(campo.nombre);
+                let uuid = this.camelize(campo.name);
                 return Object.assign(campo, {
                     id: uuid,
                     key: uuid
