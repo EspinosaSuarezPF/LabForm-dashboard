@@ -109,7 +109,6 @@ export class FormBuilderComponent implements OnInit {
                         active: true,
                         version: 1
                     } // estos valores son iniciales y obligatorios para todos los formularios
-                    console.log(this.agregarIdKeyCampos(formInfo));
                     Object.assign(formInfo, basicProps);
                     this.formulariosColl.doc(id)
                         .set(formInfo)
