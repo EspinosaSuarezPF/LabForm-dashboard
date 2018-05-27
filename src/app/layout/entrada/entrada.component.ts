@@ -16,6 +16,7 @@ interface Entrada{
   formulario:string,
   active:boolean,
   consecutivo:string,
+  fechaDeCreacion: Date,
   data:Array<{name:string,value:any}>
 }
 
@@ -68,18 +69,23 @@ export class EntradaComponent implements OnInit {
   ordenarPorColumna(nombreColumna){
     this.entradas.sort((a,b)=>{
       let ax:{name:string,value:any}=undefined;
-      for(let i=0;i<a.data.length;i++){
-        if(a.data[i].name===nombreColumna){
-          ax=a.data[i];
-          break;
-        }
-      }
       let bx:{name:string,value:any}=undefined;
-      for(let i=0;i<b.data.length;i++){
-        if(b.data[i].name===nombreColumna){
-          bx=b.data[i];
-          break;
+      if(nombreColumna !== 'fechaDeCreacion') {
+        for(let i=0;i<a.data.length;i++){
+          if(a.data[i].name===nombreColumna){
+            ax=a.data[i];
+            break;
+          }
         }
+        for(let i=0;i<b.data.length;i++){
+          if(b.data[i].name===nombreColumna){
+            bx=b.data[i];
+            break;
+          }
+        }
+      } else {
+        ax = {name: 'fechaDeCreacion', value: a.fechaDeCreacion};
+        bx = {name: 'fechaDeCreacion', value: b.fechaDeCreacion};
       }
       if(ax.value>bx.value){
         return 1;

@@ -21,6 +21,9 @@
           <th *ngFor="let campo of camposEntrada">
             <button class="btn" (click)="ordenarPorColumna(campo)">{{campo}}</button>
           </th>
+          <th>
+            <button class="btn" (click)="ordenarPorColumna('fechaDeCreacion')">Fecha de creación</button>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +31,9 @@
           <!-- <td>{{entrada.consecutivo}}</td> -->
           <td *ngFor="let d of entrada.data">
             {{d.value}}
+          </td>
+          <td>
+            {{entrada.fechaDeCreacion | date:'medium'}}
           </td>
         </tr>
       </tbody>
