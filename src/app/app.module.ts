@@ -15,6 +15,7 @@ import { AuthGuard } from './shared';
 import { firebase } from './../environments/firebase.config';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { UncamelizePipe } from './uncamelize.pipe';
 
 
 // AoT requires an exported function for factories
@@ -43,7 +44,7 @@ export function createTranslateLoader(http: HttpClient) {
         }),
         AppRoutingModule
     ],
-    declarations: [AppComponent],
+    declarations: [AppComponent, UncamelizePipe],
     providers: [AuthGuard, {provide: LocationStrategy, useClass: HashLocationStrategy}],
     bootstrap: [AppComponent]
 })
