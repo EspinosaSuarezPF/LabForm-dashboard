@@ -56,7 +56,7 @@ export class FormBuilderComponent implements OnInit {
         this.tiposCampo = [
             { value: "checkbox", text: "Dicotomico (si/no)" },
             { value: "dropdown", text: "Selección múltiple" },
-            { value: "textbox", text: "Alfanumérico" },
+            { value: "textbox", text: "Texto" },
         ]
     }
 
@@ -77,6 +77,7 @@ export class FormBuilderComponent implements OnInit {
             case 'textbox':
                 formCtrlsCampo['controlType'] = 'textbox';
                 formCtrlsCampo['value'] = new FormControl('', Validators.required);
+                formCtrlsCampo['type'] = new FormControl('', Validators.required);
                 break;
             default:
                 return;
