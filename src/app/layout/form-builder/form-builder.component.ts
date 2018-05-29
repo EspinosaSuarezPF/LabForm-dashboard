@@ -110,6 +110,7 @@ export class FormBuilderComponent implements OnInit {
                         active: true,
                         version: 1
                     } // estos valores son iniciales y obligatorios para todos los formularios
+                    formInfo.Campos = this.agregarIdKeyCampos(formInfo);
                     Object.assign(formInfo, basicProps);
                     this.formulariosColl.doc(id)
                         .set(formInfo)
@@ -117,7 +118,7 @@ export class FormBuilderComponent implements OnInit {
                             response => {
                                 window.alert("Formulario creado");
                                 formGroupFormato.reset();
-                                this.crearFormulario();
+                                this.buildFormatoForm();
                                 formGroupFormato.enable();
                             },
                             error => console.log(error)
@@ -140,7 +141,6 @@ export class FormBuilderComponent implements OnInit {
     }
 
     agregarIdKeyCampos(formInfo) {
-        console.log(formInfo);
         return formInfo.Campos.map(
             campo => {
                 let uuid = this.camelize(campo.name);
