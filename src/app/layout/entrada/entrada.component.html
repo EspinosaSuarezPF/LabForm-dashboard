@@ -19,7 +19,7 @@
               <button (click)="ordenarPorConsecutivo()">Consecutivo</button>
           </th> -->
           <th *ngFor="let campo of camposEntrada">
-            <button class="btn" (click)="ordenarPorColumna(campo)">{{campo}}</button>
+            <button class="btn" (click)="ordenarPorColumna(campo)">{{uncamelize(campo, ' ')}}</button>
           </th>
           <th>
             <button class="btn" *ngIf="camposEntrada.length!=0" (click)="ordenarPorColumna('fechaDeCreacion')">Fecha de creación</button>
