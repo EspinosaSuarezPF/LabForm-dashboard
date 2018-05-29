@@ -1,9 +1,5 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
     <div class="list-group">
-        <a target="_blank" href="https://www.uninorte.edu.co/web/laboratorio-de-geotecnia-y-materiales-de-construccion" class="list-group-item">
-            <img style="width: 100%;" src="https://www.uninorte.edu.co/image/image_gallery?uuid=ecc526b3-d293-452b-a85c-541b05605eb6&groupId=10698&t=1426795150234"
-                alt="Logo Uninorte">
-        </a>
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;{{ 'Dashboard' | translate }}
         </a>
@@ -54,6 +50,10 @@
         </a> -->
         <a [routerLink]="['/form-builder']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Form Builder' | translate }}
+        </a>
+        <a target="_blank" href="https://www.uninorte.edu.co/web/laboratorio-de-geotecnia-y-materiales-de-construccion" class="list-group-item">
+            <img style="width: 100%;" src="https://www.uninorte.edu.co/image/image_gallery?uuid=ecc526b3-d293-452b-a85c-541b05605eb6&groupId=10698&t=1426795150234"
+                alt="Logo Uninorte">
         </a>
         <!--<a class="list-group-item more-themes" href="http://www.strapui.com/" >
             {{ 'More Theme' | translate }}
