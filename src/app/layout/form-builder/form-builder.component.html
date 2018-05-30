@@ -88,6 +88,11 @@
                                                     <li class="list-group-item">
                                                         <div [formGroupName]="j">
                                                             <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    <button class="btn btn-danger" (click)="eliminarOpcion(campo, j)" >Eliminar opción</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
                                                                 <fieldset class="form-group required col-lg-6">
                                                                     <label>Nombre</label>
                                                                     <input class="form-control" type="text" formControlName="value" required>

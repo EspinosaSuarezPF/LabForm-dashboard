@@ -99,6 +99,11 @@ export class FormBuilderComponent implements OnInit {
         formsCampos.removeAt(index);
     }
 
+    eliminarOpcion(campo: AbstractControl, index: number) {
+        let formsCampos = campo.get('options') as FormArray;
+        formsCampos.removeAt(index);
+    }        
+
     crearFormulario() {
         /* codigo para creacion de formulario */
         let formGroupFormato = this.formatoForm as FormGroup;
