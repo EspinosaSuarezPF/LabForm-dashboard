@@ -30,7 +30,7 @@
         <tr *ngFor="let entrada of entradas">
           <!-- <td>{{entrada.consecutivo}}</td> -->
           <td *ngFor="let d of entrada.data">
-            {{d.value}}
+            {{boolOrValue(d.value)}}
           </td>
           <td *ngIf="camposEntrada.length!=0">
             {{entrada.fechaDeCreacion | date:'medium'}}

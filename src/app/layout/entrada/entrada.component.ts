@@ -144,6 +144,14 @@ export class EntradaComponent implements OnInit {
       });
   }
 
+  boolOrValue(value: any) {
+    if(typeof(value) == "boolean") {
+      return value ? "Cumple" : "No Cumple";
+    } else {
+      return value;
+    }
+  }
+
   uncamelize(text, separator = "_") {
     return text.replace(/[A-Z]/g, (letter) => separator + letter.toLowerCase())
       .replace("/^" + separator + "/", '');
