@@ -38,6 +38,11 @@
                     <li class="list-group-item">
                         <div [formGroupName]="i">
                             <div class="row">
+                                <div class="col-lg-3">
+                                    <button class="btn btn-danger" (click)="eliminarCampo(i)" >Eliminar campo</button>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <fieldset class="form-group required col-lg-6">
                                     <!-- nombre -->
                                     <label>Nombre</label>

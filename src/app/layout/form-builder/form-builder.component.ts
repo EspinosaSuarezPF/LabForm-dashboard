@@ -61,7 +61,7 @@ export class FormBuilderComponent implements OnInit {
     }
 
     agregarNuevoCampo(tipoNuevoCampo) {
-        let formsCampos = this.formatoForm.get('Campos');
+        let formsCampos = this.formatoForm.get('Campos') as FormArray;
         let formCtrlsCampo = {};
         /* switch para tipos de campos */
         switch (tipoNuevoCampo) {
@@ -92,6 +92,11 @@ export class FormBuilderComponent implements OnInit {
         formsCampos.push(
             this.fb.group(formCtrlsCampo),
         );
+    }
+
+    eliminarCampo(index: number) {
+        let formsCampos = this.formatoForm.get('Campos') as FormArray;
+        formsCampos.removeAt(index);
     }
 
     crearFormulario() {
