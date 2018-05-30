@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
     public sliders: Array<any> = []; */
 
     constructor(private afs: AngularFirestore) {
-        
+
         /* this.sliders.push(
             {
                 imagePath: 'assets/images/slider1.jpg',
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.entradaCol = this.afs.collection('Entradas');
+        this.entradaCol = this.afs.collection('Entradas', ref => ref.limit(100));
         this.entradaCol.valueChanges()
             .subscribe(data => {
                 this.entradas = data.sort((a, b) => a.fechaDeCreacion - b.fechaDeCreacion);
