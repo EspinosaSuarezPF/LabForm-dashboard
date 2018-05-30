@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { 
+    AngularFirestore,
+    AngularFirestoreCollection,
+    AngularFirestoreDocument,
+    AngularFirestoreModule 
+} from 'angularfire2/firestore';
 
 @Component({
     selector: 'app-dashboard',
@@ -8,11 +14,14 @@ import { routerTransition } from '../../router.animations';
     animations: [routerTransition()]
 })
 export class DashboardComponent implements OnInit {
-    public alerts: Array<any> = [];
-    public sliders: Array<any> = [];
+    entradaCol: AngularFirestoreCollection<any>;
+    entradas: Array<any>;
+    /* public alerts: Array<any> = [];
+    public sliders: Array<any> = []; */
 
-    constructor() {
-        this.sliders.push(
+    constructor(private afs: AngularFirestore) {
+        
+        /* this.sliders.push(
             {
                 imagePath: 'assets/images/slider1.jpg',
                 label: 'First slide label',
@@ -49,13 +58,19 @@ export class DashboardComponent implements OnInit {
                 consectetur velit culpa molestias dignissimos
                 voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
             }
-        );
+        ); */
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.entradaCol = this.afs.collection('Entradas');
+        this.entradaCol.valueChanges()
+            .subscribe(data => {
+                this.entradas = data.sort((a, b) => a.fechaDeCreacion - b.fechaDeCreacion);
+            })
+    }
 
-    public closeAlert(alert: any) {
+    /* public closeAlert(alert: any) {
         const index: number = this.alerts.indexOf(alert);
         this.alerts.splice(index, 1);
-    }
+    } */
 }
