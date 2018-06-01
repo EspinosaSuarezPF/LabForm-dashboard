@@ -28,7 +28,7 @@
             </div>
         </div>
         <!-- formularios para los campos -->
-        <div class="card mt-1" *ngIf="formatoForm.get('Campos').controls.length > 0">
+        <div class="card mt-1">
             <div class="card-header">
                 Campos del formulario
             </div>
@@ -38,7 +38,7 @@
                         <div [formGroupName]="i">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <button class="btn btn-danger" (click)="eliminarCampo(i)" >Eliminar campo</button>
+                                    <button class="btn btn-danger" (click)="eliminarCampo(i)">Eliminar campo</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -54,7 +54,7 @@
                                     <input class="form-control" type="text" formControlName="label" placeholder="Mensaje" required>
                                     <!-- label -->
                                 </fieldset>
-                                <fieldset class="form-group required col-lg-6">
+                                <fieldset class="form-group col-lg-6">
                                     <!-- requerido -->
                                     <label>
                                         <input type="checkbox" formControlName="required"> Marque esta casilla si el campo es requerido.
@@ -67,7 +67,7 @@
                                 </fieldset>
                                 <div class="col-lg-12" [ngSwitch]="campo.value.controlType">
                                     <div *ngSwitchCase="'checkbox'">
-                                        <fieldset class="form-group required">
+                                        <fieldset class="form-group">
                                             <label>
                                                 <input type="checkbox" formControlName="value"> Valor por defecto de la casilla (checkeado o no)
                                             </label>
@@ -84,7 +84,7 @@
                                                         <div [formGroupName]="j">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <button class="btn btn-danger" (click)="eliminarOpcion(campo, j)" >Eliminar opción</button>
+                                                                    <button class="btn btn-danger" (click)="eliminarOpcion(campo, j)">Eliminar opción</button>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                     <div class="row" *ngSwitchCase="'textbox'">
-                                        <fieldset class="col-lg-6 form-group">
+                                        <fieldset class="col-lg-6 required form-group">
                                             <label>Tipo de campo</label>
                                             <select class="form-control" formControlName="type" required>
                                                 <option value="text">Letras y números</option>
@@ -121,7 +121,7 @@
                                         </fieldset>
                                     </div>
                                     <div class="row" *ngSwitchCase="'date'">
-                                        <fieldset class="col-lg-6 form-group">
+                                        <fieldset class="col-lg-6 required form-group">
                                             <label>Formato de la fecha/hora</label>
                                             <select class="form-control" formControlName="format" required>
                                                 <option value="YYYY/MM/DD">AAAA/MM/DD</option>
@@ -134,26 +134,26 @@
                         </div>
                     </li>
                 </div>
+                <li class="list-group-item">
+                    <form class="form-inline mt-2">
+                        <div class="form-group">
+                            <label for="tipo-campo" class="sr-only">Tipo de campo</label>
+                            <input type="text" readonly class="form-control-plaintext text-center" id="tipo-campo" value="Tipo de campo">
+                        </div>
+                        <div class="form-group mr-3">
+                            <select class="form-control" [(ngModel)]="tipoNuevoCampo" [ngModelOptions]="{standalone: true}" required>
+                                <option *ngFor="let tipo of tiposCampo" [value]="tipo.value">{{tipo.text}}</option>
+                            </select>
+                        </div>
+                        <button type="button" (click)="agregarNuevoCampo(tipoNuevoCampo)" class="btn btn-default">
+                            <i class="fa fa-plus"></i> Agregar Campo
+                        </button>
+                    </form>
+                </li>
             </ul>
             <div class="card-footer">
-                <button class="btn btn-primary" (click)="crearFormulario()">Guardar Formulario</button>
+                <button class="btn btn-primary" (click)="crearFormulario()" [disabled]="!validForm()">Guardar Formulario</button>
             </div>
         </div>
-        <!-- Agregar campo -->
-        <!-- agregar validacion para activar el boton de agregar. tiene que haber al menos un campo valido -->
-    </form>
-    <form class="form-inline mt-2">
-        <div class="form-group">
-            <label for="tipo-campo" class="sr-only">Tipo de campo</label>
-            <input type="text" readonly class="form-control-plaintext text-center" id="tipo-campo" value="Tipo de campo">
-        </div>
-        <div class="form-group mr-3">
-            <select class="form-control" [(ngModel)]="tipoNuevoCampo" [ngModelOptions]="{standalone: true}" required>
-                <option *ngFor="let tipo of tiposCampo" [value]="tipo.value">{{tipo.text}}</option>
-            </select>
-        </div>
-        <button type="button" (click)="agregarNuevoCampo(tipoNuevoCampo)" class="btn btn-default">
-            <i class="fa fa-plus"></i> Agregar Campo
-        </button>
     </form>
 </div>

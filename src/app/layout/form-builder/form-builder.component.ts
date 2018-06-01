@@ -73,7 +73,7 @@ export class FormBuilderComponent implements OnInit {
             case 'dropdown':
                 formCtrlsCampo['controlType'] = 'dropdown';
                 formCtrlsCampo['options'] = new FormArray( new Array<AbstractControl>() );
-                formCtrlsCampo['value'] = new FormControl('', Validators.required);
+                formCtrlsCampo['value'] = new FormControl('');
                 break;
             case 'textbox':
                 formCtrlsCampo['controlType'] = 'textbox';
@@ -165,6 +165,24 @@ export class FormBuilderComponent implements OnInit {
                 });
             }
         );
+    }
+
+    validForm() {
+        let formatoFormGroup = this.formatoForm as FormGroup;
+        let campos = formatoFormGroup.get('Campos') as FormArray;
+        let selectsWithOptions: boolean = true;
+        campos.controls.forEach(campo => {
+            if(campo.get('options')) {
+                let options = campo.get('options') as FormArray;
+                selectsWithOptions = selectsWithOptions && (options.controls.length > 0);
+            }
+        });
+        let valid: boolean = (
+            formatoFormGroup.valid && // todos los campos requeridos llenos
+            (campos.controls.length > 0) && // haya al menos 1 campo
+            selectsWithOptions // no hayan select-options sin opciones de respuesta
+        );
+        return valid;
     }
 
     camelize(str) {
