@@ -25,6 +25,8 @@ export class FormBuilderComponent implements OnInit {
     tiposCampo: Array<any>;
     categorias: Array<any>;
 
+    formularios: Array<any>;
+
     constructor(private afs: AngularFirestore, private fb: FormBuilder) {
         this.buildFormatoForm();
         this.message = "";
@@ -59,6 +61,20 @@ export class FormBuilderComponent implements OnInit {
             { value: "textbox", text: "Texto" },
             { value: "date", text: "Fecha/hora" },
         ]
+
+
+        this.formulariosColl.valueChanges()
+            .subscribe(
+                formularios => {
+                    this.formularios = formularios;
+                }
+            );
+    }
+
+    fetchForm(formulario: any) {
+        console.log(formulario);
+        this.formatoForm = this.fb.group(formulario);
+
     }
 
     agregarNuevoCampo(tipoNuevoCampo) {
@@ -171,15 +187,19 @@ export class FormBuilderComponent implements OnInit {
         let formatoFormGroup = this.formatoForm as FormGroup;
         let campos = formatoFormGroup.get('Campos') as FormArray;
         let selectsWithOptions: boolean = true;
-        campos.controls.forEach(campo => {
-            if(campo.get('options')) {
-                let options = campo.get('options') as FormArray;
-                selectsWithOptions = selectsWithOptions && (options.controls.length > 0);
-            }
-        });
+        let nonEmptyCampos: boolean = false;
+        if(campos.controls){
+            nonEmptyCampos = (campos.controls.length > 0);
+            campos.controls.forEach(campo => {
+                if(campo.get('options')) {
+                    let options = campo.get('options') as FormArray;
+                    selectsWithOptions = selectsWithOptions && (options.controls.length > 0);
+                }
+            });
+        }
         let valid: boolean = (
             formatoFormGroup.valid && // todos los campos requeridos llenos
-            (campos.controls.length > 0) && // haya al menos 1 campo
+            nonEmptyCampos && // haya al menos 1 campo
             selectsWithOptions // no hayan select-options sin opciones de respuesta
         );
         return valid;
