@@ -120,6 +120,15 @@
                                             <input class="form-control" type="text" formControlName="value">
                                         </fieldset>
                                     </div>
+                                    <div class="row" *ngSwitchCase="'date'">
+                                        <fieldset class="col-lg-6 form-group">
+                                            <label>Formato de la fecha/hora</label>
+                                            <select class="form-control" formControlName="format" required>
+                                                <option value="YYYY/MM/DD">AAAA/MM/DD</option>
+                                                <option value="YYYY/MM/DD HH:MM">AAAA/MM/DD HH:MM</option>
+                                            </select>
+                                        </fieldset>
+                                    </div>
                                 </div>
                             </div>
                         </div>

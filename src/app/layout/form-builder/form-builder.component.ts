@@ -57,6 +57,7 @@ export class FormBuilderComponent implements OnInit {
             { value: "checkbox", text: "Dicotomico (si/no)" },
             { value: "dropdown", text: "Selección múltiple" },
             { value: "textbox", text: "Texto" },
+            { value: "date", text: "Fecha/hora" },
         ]
     }
 
@@ -78,6 +79,10 @@ export class FormBuilderComponent implements OnInit {
                 formCtrlsCampo['controlType'] = 'textbox';
                 formCtrlsCampo['value'] = new FormControl('', Validators.required);
                 formCtrlsCampo['type'] = new FormControl('', Validators.required);
+                break;
+            case 'date':
+                formCtrlsCampo['controlType'] = 'date';
+                formCtrlsCampo['format'] = new FormControl('', Validators.required);
                 break;
             default:
                 return;
