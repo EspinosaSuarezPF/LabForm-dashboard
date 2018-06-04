@@ -77,7 +77,7 @@ export class FormBuilderComponent implements OnInit {
                 break;
             case 'textbox':
                 formCtrlsCampo['controlType'] = 'textbox';
-                formCtrlsCampo['value'] = new FormControl('', Validators.required);
+                formCtrlsCampo['value'] = new FormControl('');
                 formCtrlsCampo['type'] = new FormControl('', Validators.required);
                 break;
             case 'date':
