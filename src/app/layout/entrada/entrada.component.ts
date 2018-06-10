@@ -24,9 +24,15 @@ interface Formulario {
   id: string,
   nombre: string,
   categoriaId: string,
-  active: true,
+  active: boolean,
   version: number,
   Campos: Array<object>
+}
+
+interface Categoria {
+  id: string,
+  nombre: string,
+  active: boolean
 }
 
 @Component({
@@ -42,13 +48,16 @@ export class EntradaComponent implements OnInit {
   }
 
   //Declaraciones
+  categoriaCol:AngularFirestoreCollection<Categoria>;
+  categorias:Array<Categoria>=[];
   entradaCol: AngularFirestoreCollection<Entrada>;
   entradas: Array<Entrada> = [];
   formularioCol: AngularFirestoreCollection<Formulario>;
   formularios: Array<Formulario>;
   nombreFormularios: Array<string> = [];
   camposEntrada: Array<string> = [];
-  public opcionSelect: string = "";
+  public categoriaSelect: Categoria =undefined;
+  public formularioSelect: string = "";
 
   //Ordena según el consecutivo
   ordenarPorConsecutivo() {
@@ -99,6 +108,28 @@ export class EntradaComponent implements OnInit {
     })
   }
 
+  cargarCategorias(){
+    this.categoriaCol.valueChanges().subscribe(data=>{
+      this.categorias=data;
+    });
+  }
+
+  cargarFormularios(categoria){
+    console.log(categoria.id);
+    if(categoria.id === undefined || categoria.id===null){
+      this.nombreFormularios=[];
+    }
+    else{
+      this.nombreFormularios=[];
+      this.formularioCol.valueChanges().subscribe(data=>{
+        data.forEach(formulario=>{
+          if(formulario.categoriaId == categoria.id){
+            this.nombreFormularios.push(formulario.nombre);
+          }
+        });
+      })
+    }
+  }
   cargarEntradaSegunFormulario(opcion) {
     //Carga entrada dependiendo del formulario escogido
     this.entradaCol.valueChanges()
@@ -132,6 +163,8 @@ export class EntradaComponent implements OnInit {
   ngOnInit() {
     this.entradaCol = this.afs.collection('Entradas');
     this.formularioCol = this.afs.collection('Formularios');
+    this.categoriaCol = this.afs.collection('Categorias');
+    this.cargarCategorias();
     //Obtencion de nombre de formularios
     this.formularioCol.valueChanges()
       .subscribe(data => {
