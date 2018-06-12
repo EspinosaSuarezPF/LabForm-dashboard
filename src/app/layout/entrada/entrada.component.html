@@ -18,6 +18,7 @@
         {{formulario}}
       </option>
     </select>
+    <a class="btn btn-success" [href]="encodedUriFile" download="descarga.csv" *ngIf="encodedUriFile">Descargar Archivo</a>
   </form>
 
   <h4>Lista de entradas:</h4>

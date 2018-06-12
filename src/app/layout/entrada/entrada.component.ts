@@ -10,6 +10,7 @@ import {
   from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface Entrada {
   id: string,
@@ -43,7 +44,10 @@ interface Categoria {
 })
 export class EntradaComponent implements OnInit {
 
-  constructor(private afs: AngularFirestore) {
+  constructor(
+    private afs: AngularFirestore,
+    private sanitizer: DomSanitizer
+  ) {
 
   }
 
@@ -58,6 +62,7 @@ export class EntradaComponent implements OnInit {
   camposEntrada: Array<string> = [];
   public categoriaSelect: Categoria =undefined;
   public formularioSelect: string = "";
+  encodedUriFile: string;
 
   //Ordena según el consecutivo
   ordenarPorConsecutivo() {
@@ -115,6 +120,8 @@ export class EntradaComponent implements OnInit {
   }
 
   cargarFormularios(categoria){
+    this.entradas = [];
+    this.camposEntrada = [];
     console.log(categoria.id);
     if(categoria.id === undefined || categoria.id===null){
       this.nombreFormularios=[];
@@ -157,6 +164,7 @@ export class EntradaComponent implements OnInit {
           });
           this.entradas.push(entradaDefault);
         }
+        this.downloadCsv();
       });
   }
 
@@ -175,6 +183,24 @@ export class EntradaComponent implements OnInit {
         });
         this.nombreFormularios.sort();
       });
+  }
+
+  downloadCsv() {
+    let rows = new Array();
+    rows.push(this.camposEntrada);
+    this.entradas.forEach(entrada => {
+      let row = new Array();
+      entrada.data.forEach(data => {
+        row.push( this.boolOrValue(data.value) );
+      });
+      rows.push(row);
+    });
+    let csvContent = "data:text/csv;charset=utf-8,";
+    rows.forEach(function(rowArray){
+      let row = rowArray.join(",");
+      csvContent += row + "\r\n";
+    });
+    this.encodedUriFile = this.sanitizer.bypassSecurityTrustUrl(encodeURI(csvContent)) as string;
   }
 
   boolOrValue(value: any) {
