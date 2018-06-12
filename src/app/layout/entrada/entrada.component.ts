@@ -61,7 +61,7 @@ export class EntradaComponent implements OnInit {
   nombreFormularios: Array<string> = [];
   camposEntrada: Array<string> = [];
   public categoriaSelect: Categoria =undefined;
-  public formularioSelect: string = "";
+  public formatoSelect: string = "";
   encodedUriFile: string;
 
   //Ordena según el consecutivo
