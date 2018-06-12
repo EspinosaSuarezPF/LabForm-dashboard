@@ -10,6 +10,7 @@ import {
   from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface Entrada {
   id: string,
@@ -24,9 +25,15 @@ interface Formulario {
   id: string,
   nombre: string,
   categoriaId: string,
-  active: true,
+  active: boolean,
   version: number,
   Campos: Array<object>
+}
+
+interface Categoria {
+  id: string,
+  nombre: string,
+  active: boolean
 }
 
 @Component({
@@ -37,18 +44,25 @@ interface Formulario {
 })
 export class EntradaComponent implements OnInit {
 
-  constructor(private afs: AngularFirestore) {
+  constructor(
+    private afs: AngularFirestore,
+    private sanitizer: DomSanitizer
+  ) {
 
   }
 
   //Declaraciones
+  categoriaCol:AngularFirestoreCollection<Categoria>;
+  categorias:Array<Categoria>=[];
   entradaCol: AngularFirestoreCollection<Entrada>;
   entradas: Array<Entrada> = [];
   formularioCol: AngularFirestoreCollection<Formulario>;
   formularios: Array<Formulario>;
   nombreFormularios: Array<string> = [];
   camposEntrada: Array<string> = [];
-  public opcionSelect: string = "";
+  public categoriaSelect: Categoria =undefined;
+  public formularioSelect: string = "";
+  encodedUriFile: string;
 
   //Ordena según el consecutivo
   ordenarPorConsecutivo() {
@@ -99,6 +113,30 @@ export class EntradaComponent implements OnInit {
     })
   }
 
+  cargarCategorias(){
+    this.categoriaCol.valueChanges().subscribe(data=>{
+      this.categorias=data;
+    });
+  }
+
+  cargarFormularios(categoria){
+    this.entradas = [];
+    this.camposEntrada = [];
+    console.log(categoria.id);
+    if(categoria.id === undefined || categoria.id===null){
+      this.nombreFormularios=[];
+    }
+    else{
+      this.nombreFormularios=[];
+      this.formularioCol.valueChanges().subscribe(data=>{
+        data.forEach(formulario=>{
+          if(formulario.categoriaId == categoria.id){
+            this.nombreFormularios.push(formulario.nombre);
+          }
+        });
+      })
+    }
+  }
   cargarEntradaSegunFormulario(opcion) {
     //Carga entrada dependiendo del formulario escogido
     this.entradaCol.valueChanges()
@@ -126,12 +164,15 @@ export class EntradaComponent implements OnInit {
           });
           this.entradas.push(entradaDefault);
         }
+        this.downloadCsv();
       });
   }
 
   ngOnInit() {
     this.entradaCol = this.afs.collection('Entradas');
     this.formularioCol = this.afs.collection('Formularios');
+    this.categoriaCol = this.afs.collection('Categorias');
+    this.cargarCategorias();
     //Obtencion de nombre de formularios
     this.formularioCol.valueChanges()
       .subscribe(data => {
@@ -142,6 +183,24 @@ export class EntradaComponent implements OnInit {
         });
         this.nombreFormularios.sort();
       });
+  }
+
+  downloadCsv() {
+    let rows = new Array();
+    rows.push(this.camposEntrada);
+    this.entradas.forEach(entrada => {
+      let row = new Array();
+      entrada.data.forEach(data => {
+        row.push( this.boolOrValue(data.value) );
+      });
+      rows.push(row);
+    });
+    let csvContent = "data:text/csv;charset=utf-8,";
+    rows.forEach(function(rowArray){
+      let row = rowArray.join(",");
+      csvContent += row + "\r\n";
+    });
+    this.encodedUriFile = this.sanitizer.bypassSecurityTrustUrl(encodeURI(csvContent)) as string;
   }
 
   boolOrValue(value: any) {
